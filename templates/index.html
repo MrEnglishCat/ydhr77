@@ -3,7 +3,20 @@
 {% block title %} Home {% endblock title %}
 
 {% block content %}
-<h1>Welcome to my website!</h1>
-<p>This is the homepage</p>
+    <h1>Welcome to my website!</h1>
+    <p>This is the homepage</p>
+    <div style="display: flex; margin: 0 auto; width: 50%">
+        <form>
+            <div style="display: flex; flex-direction: column; margin: 0 auto;">
+                <label for="input1">Input1</label>
+                <input type="text" id="input1"/>
+                <div style="padding-top:25px">
+                    <button onclick="" class="btn btn-primary">Add input</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
 
 {% endblock %}
