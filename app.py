@@ -1,5 +1,4 @@
 import json
-
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -18,15 +17,11 @@ app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 
-
 migrate = Migrate(app, db)
 
-
 class Form(db.Model):
-
-
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.JSON)
+    json = db.Column(db.JSON)
 
 
 
@@ -44,9 +39,12 @@ def to_nice_json(value):
 @app.route("/", methods=["GET", "POST"])
 def hello_world():
     if request.method == "POST":
-        form_data = request.form.items()
-        # return  redirect(url_for("results"))
-        return  render_template("index.html", form_data=form_data)
+        form_data = request.form.to_dict()
+        new_entry = Form(json=form_data)
+        db.session.add(new_entry)
+        db.session.commit()
+        return redirect(url_for('results', name=new_entry.name))
+
 
     return render_template("index.html")
 
@@ -54,6 +52,8 @@ def hello_world():
 @app.route("/results")
 def results():
     data = Form.query.all()
+
+    print(data)
 
     return render_template("results.html", data=data)
 

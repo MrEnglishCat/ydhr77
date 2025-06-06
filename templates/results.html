@@ -8,9 +8,9 @@
 {% block content %}
     Ниже вывод результата:
     {% for entry in data %}
-        <pre>{{ entry.data | to_nice_json }}</pre>
+        <pre>{{ entry.name | to_nice_json }}</pre>
     {% endfor %}
-
+    <a href="/" class="btn btn-primary">Main page</a>
     <script>
         document.querySelectorAll("pre").forEach(function(block) {
             block.innerHTML = JSON.stringify(JSON.parse(block.textContent), null, 2);
