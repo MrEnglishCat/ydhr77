@@ -5,21 +5,18 @@
 {% block content %}
     <h1>Welcome to my website!</h1>
     <p>This is the homepage</p>
+
     <div style="display: flex; margin: 0 auto; width: 50%">
-        <form method="post" id="dynamicForm">
+        <form method="post" action="/" id="dynamicForm">
             <div style="display: flex; flex-direction: column; margin: 0 auto;">
-                <label for="input1">Input1</label>
                 <div id="inputs">
-                    <input type="text" id="input1"/>
+                    <input type="text" name="input1" placeholder="Имя" />
                 </div>
                 <div style="padding-top:25px">
-                    <button id="addInput" class="btn btn-primary">Add input</button>
+                    <button type="button" id="addInput" class="btn btn-primary">Add input</button>
                     <button type="submit" class="btn btn-success">Send</button>
                 </div>
             </div>
-
         </form>
     </div>
-
-
 {% endblock %}

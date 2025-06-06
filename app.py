@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -6,12 +8,11 @@ import os
 
 env = Env()
 env.read_env('.env')
-
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
-    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres@localhost/flask_db'
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = env.str('SQLALCHEMY_DATABASE_URI')
+    SQLALCHEMY_TRACK_MODIFICATIONS = env.bool('SQLALCHEMY_TRACK_MODIFICATIONS')
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -35,15 +36,17 @@ class Form(db.Model):
 # $(«ul li») — получить все <li> элементы из списка <ul>
 # $(«ul li:first») — получить только первый элемент <li> из списка <ul>
 
+@app.template_filter('to_nice_json')
+def to_nice_json(value):
+    return json.dumps(value)
 
 
 @app.route("/", methods=["GET", "POST"])
 def hello_world():
     if request.method == "POST":
-        form_data = request.form.to_dict(flat=False
-                                         )
-        print(form_data)
-        return  redirect(url_for("results"))
+        form_data = request.form.items()
+        # return  redirect(url_for("results"))
+        return  render_template("index.html", form_data=form_data)
 
     return render_template("index.html")
 
