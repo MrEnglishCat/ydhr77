@@ -43,7 +43,7 @@ def hello_world():
         new_entry = Form(json=form_data)
         db.session.add(new_entry)
         db.session.commit()
-        return redirect(url_for('results', name=new_entry.name))
+        return redirect(url_for('results', data=new_entry.json))
 
 
     return render_template("index.html")
