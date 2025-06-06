@@ -1,11 +1,59 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from environs import Env
+import os
+
+env = Env()
+env.read_env('.env')
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+class Config:
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres@localhost/flask_db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 app = Flask(__name__)
+app.config.from_object(Config)
+db = SQLAlchemy(app)
 
 
-@app.route("/")
+migrate = Migrate(app, db)
+
+
+class Form(db.Model):
+
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.JSON)
+
+
+
+# $("#header") — получение элемента с id=«header»
+# $(«h3») — получить все <h3> элементы
+# $(«div#content .photo») — получить все элементы с классом =«photo» которые находятся в элементе div с id=«content»
+# $(«ul li») — получить все <li> элементы из списка <ul>
+# $(«ul li:first») — получить только первый элемент <li> из списка <ul>
+
+
+
+@app.route("/", methods=["GET", "POST"])
 def hello_world():
+    if request.method == "POST":
+        form_data = request.form.to_dict(flat=False
+                                         )
+        print(form_data)
+        return  redirect(url_for("results"))
+
     return render_template("index.html")
+
+
+@app.route("/results")
+def results():
+    data = Form.query.all()
+
+    return render_template("results.html", data=data)
+
 
 
 if __name__ == "__main__":

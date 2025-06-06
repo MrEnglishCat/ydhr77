@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    Results
+{% endblock %}
+
+{% block content %}
+    Ниже вывод результата:
+    {% for entry in data %}
+        <pre>{{ entry.data | to_nice_json }}</pre>
+    {% endfor %}
+
+    <script>
+        document.querySelectorAll("pre").forEach(function(block) {
+            block.innerHTML = JSON.stringify(JSON.parse(block.textContent), null, 2);
+        });
+    </script>
+{% endblock %}
